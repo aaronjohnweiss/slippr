@@ -8,6 +8,7 @@ class User:
     sets = 0
     wins = 0
     losses = 0
+    regional_placement = None
 
     def __init__(self, tag):
         self.tag = tag

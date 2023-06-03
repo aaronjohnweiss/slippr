@@ -40,16 +40,18 @@ rank_map = {
 }
 
 
-def get_rank(elo):
+def get_rank(elo, regional_placement):
 
     previous_value = rank_map[0]
     for idx, key in enumerate(rank_map):
 
         if float(elo) < float(key):
+            if regional_placement != None and elo > 2192:
+                break
             return previous_value
         previous_value = rank_map[key]
 
-    return rank_map[10000]
+    return rank_map[0]
 
 
 
@@ -65,9 +67,11 @@ def get_user_from_tag(tag):
     user_data = x.json()['data']['getConnectCode']['user']
     user.name = user_data['displayName']
     user.elo = user_data['rankedNetplayProfile']['ratingOrdinal']
-    user.rank = get_rank(user.elo)
+    user.regional_placement = user_data['rankedNetplayProfile']['dailyRegionalPlacement']
+    user.rank = get_rank(user.elo, user.regional_placement)
     user.wins = user_data['rankedNetplayProfile']['wins']
     user.losses = user_data['rankedNetplayProfile']['losses']
     user.sets = user_data['rankedNetplayProfile']['ratingUpdateCount']
+
 
     return user
