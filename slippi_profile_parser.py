@@ -44,8 +44,6 @@ def get_rank(elo):
 
     previous_value = rank_map[0]
     for idx, key in enumerate(rank_map):
-        print(idx, key)
-        print(float(elo), float(key))
 
         if float(elo) < float(key):
             return previous_value
@@ -62,9 +60,7 @@ def get_user_from_tag(tag):
     request_json['variables']['cc'] = user.tag.upper()
     request_json['variables']['uid'] = user.tag.upper()
 
-    print('Requesting data for ' + user.tag.upper())
     x = requests.post(api_url, json=request_json)
-    print(x.json())
 
     user_data = x.json()['data']['getConnectCode']['user']
     user.name = user_data['displayName']
