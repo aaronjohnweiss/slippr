@@ -8,6 +8,10 @@ async def standings(message):
     server_data = Server(message.guild.name)
     response = await message.channel.send('Fetching stats...')
 
+    if(len(server_data.users) < 1):
+        await response.edit(content='You must add users before performing this operation')
+        return
+
     pool = None
 
     print('Creating thread pool..')
