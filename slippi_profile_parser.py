@@ -51,7 +51,7 @@ def get_rank(elo, regional_placement):
             return previous_value
         previous_value = rank_map[key]
 
-    return rank_map[0]
+    return rank_map[10000]
 
 
 
