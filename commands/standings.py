@@ -1,5 +1,3 @@
-from multiprocessing import Pool
-
 from server import Server
 from slippi_profile_parser import get_user_from_tag
 
@@ -12,15 +10,8 @@ async def standings(message):
         await response.edit(content='You must add users before performing this operation')
         return
 
-    pool = None
-
-    print('Creating thread pool..')
-    with Pool(len(server_data.users)) as p:
-        pool = p.map(get_user_from_tag, server_data.users.keys())
-
-    print('Cleaning up thread results..')
-    for item in pool:
-        server_data.users[item.uri_name] = item
+    for key, value in server_data.users.items():
+        server_data.users[key] = get_user_from_tag(server_data.users[key].tag)
 
     def select_elo(tuple):
         return float(tuple[1].elo)
@@ -29,6 +20,6 @@ async def standings(message):
 
     standings = 'Current standings: \n'
     for idx, tuple in enumerate(results):
-        standings += '> ' + str(idx+1) + '. ' + tuple[1].name + ' - ' + tuple[1].rank + ' (' + tuple[1].elo + ')\n'
+        standings += '> ' + str(idx+1) + '. ' + str(tuple[1].name) + ' - ' + str(tuple[1].rank) + ' (' + str("{:.1f}".format(tuple[1].elo)) + ')\n'
 
     await response.edit(content=standings)
