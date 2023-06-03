@@ -37,5 +37,11 @@ def get_user_from_tag(tag):
     user.rank = p_tags[5].get_text()
     user.elo = p_tags[6].get_text().split()[0]
 
+    gameplay = soup.find('div', class_='jss18')
+    gameplay_tags = gameplay.findChildren()
+
+    user.wins = gameplay_tags[-6].get_text()
+    user.losses = gameplay_tags[-4].get_text()
+    user.sets = gameplay_tags[-1].get_text()
 
     return user

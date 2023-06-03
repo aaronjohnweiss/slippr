@@ -4,9 +4,9 @@ from server import Server
 from slippi_profile_parser import get_user_from_tag
 
 
-async def standings(message):
+async def sets(message):
     server_data = Server(message.guild.name)
-    response = await message.channel.send('Fetching stats...')
+    response = await message.channel.send('Fetching set data...')
 
     pool = None
 
@@ -18,13 +18,13 @@ async def standings(message):
     for item in pool:
         server_data.users[item.uri_name] = item
 
-    def select_elo(tuple):
-        return float(tuple[1].elo)
+    def select_sets(tuple):
+        return int(tuple[1].sets)
 
-    results = sorted(server_data.users.items(), key=select_elo, reverse=True)
+    results = sorted(server_data.users.items(), key=select_sets, reverse=True)
 
-    standings = 'Current standings: \n'
+    standings = 'Sets played: \n'
     for idx, tuple in enumerate(results):
-        standings += '> ' + str(idx+1) + '. ' + tuple[1].name + ' - ' + tuple[1].rank + ' (' + tuple[1].elo + ')\n'
+        standings += '> ' + str(idx+1) + '. ' + tuple[1].name + ' - ' + tuple[1].wins + ' / ' + tuple[1].losses + ' (' + tuple[1].sets + ')\n'
 
     await response.edit(content=standings)
