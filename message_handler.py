@@ -3,6 +3,7 @@ from commands.commands import commands
 from commands.delete import delete
 from commands.sets import sets
 from commands.standings import standings
+from commands.users import users
 
 
 async def handle_message(client, message):
@@ -27,6 +28,9 @@ async def handle_message(client, message):
 
     if message.content == '!sets':
         await sets(message)
+
+    if message.content == '!users':
+        await users(message)
 
     if message.content == '!commands' or message.content == '!help':
         await commands(message)

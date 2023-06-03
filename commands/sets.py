@@ -9,21 +9,18 @@ async def sets(message):
     response = await message.channel.send('Fetching set data...')
 
     if (len(server_data.users) < 1):
-        await response.edit(content='You must add users before performing this operation')
+        await response.edit(content='You must add users before performing this operation.')
         return
 
-    # pool = None
-    #
-    # print('Creating thread pool..')
-    # with Pool(len(server_data.users)) as p:
-    #     pool = p.map(get_user_from_tag, server_data.users.keys())
-    #
-    # print('Cleaning up thread results..')
-    # for item in pool:
-    #     server_data.users[item.uri_name] = item
+    pool = None
 
-    for key, value in server_data.users.items():
-        server_data.users[key] = get_user_from_tag(server_data.users[key].tag)
+    pool_map = [v.tag for (k, v) in server_data.users.items()]
+
+    with Pool(len(server_data.users)) as p:
+        pool = p.map(get_user_from_tag, pool_map)
+
+    for item in pool:
+        server_data.users[item.uri_name] = item
 
     def select_sets(tuple):
         return int(tuple[1].sets)

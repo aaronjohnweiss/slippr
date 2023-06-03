@@ -1,3 +1,5 @@
+from multiprocessing import Pool
+
 from server import Server
 from slippi_profile_parser import get_user_from_tag
 
@@ -7,11 +9,18 @@ async def standings(message):
     response = await message.channel.send('Fetching stats...')
 
     if(len(server_data.users) < 1):
-        await response.edit(content='You must add users before performing this operation')
+        await response.edit(content='You must add users before performing this operation.')
         return
 
-    for key, value in server_data.users.items():
-        server_data.users[key] = get_user_from_tag(server_data.users[key].tag)
+    pool = None
+
+    pool_map = [v.tag for (k, v) in server_data.users.items()]
+
+    with Pool(len(server_data.users)) as p:
+        pool = p.map(get_user_from_tag, pool_map)
+
+    for item in pool:
+        server_data.users[item.uri_name] = item
 
     def select_elo(tuple):
         return float(tuple[1].elo)
