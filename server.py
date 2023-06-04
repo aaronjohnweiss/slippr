@@ -16,14 +16,11 @@ class Server:
     def __init__(self, name):
         self.users = dict()
         if os.path.isfile('servers/' + str(name) + '.pkl'):
-            print('  loading from pickle file.')
             self.__dict__ = load(get_path(name))
         else:
-            print('  creating from scratch.')
+            print('Creating server file ' + name)
             self.name = name
             dump(self.__dict__, get_path(name))
-
-        print('Server ' + self.name + ' initialized.')
 
     def save(self):
         print('Saving file ' + get_path(self.name))

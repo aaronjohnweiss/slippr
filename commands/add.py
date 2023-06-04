@@ -7,7 +7,6 @@ async def add(message):
     response = await message.channel.send('Adding user...')
     msg = ''
     try:
-        print('Adding user...')
         tag = message.content.split()[1]
         user = get_user_from_tag(tag)
         msg = 'User ' + user.name + ' added to the channel standings.'

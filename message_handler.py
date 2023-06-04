@@ -13,7 +13,7 @@ async def handle_message(client, message):
     if str(message.channel) != 'meleechat':
         return
 
-    if(message.guild == None):
+    if message.guild == None:
         print('Message did not belong to a guild. Returning.')
         return
 
