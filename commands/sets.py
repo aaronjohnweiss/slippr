@@ -22,7 +22,9 @@ async def sets(message):
         pool = p.map(get_user_from_tag, pool_map)
 
     for item in pool:
-        server_data.users[item.uri_name] = item
+        server_data.users[item.uri_name].wins = item.wins
+        server_data.users[item.uri_name].losses = item.losses
+        server_data.users[item.uri_name].sets = item.sets
 
     def set_difference(current, previous):
         difference = current - previous

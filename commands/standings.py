@@ -22,7 +22,9 @@ async def standings(message):
         pool = p.map(get_user_from_tag, pool_map)
 
     for item in pool:
-        server_data.users[item.uri_name] = item
+        server_data.users[item.uri_name].rank = item.rank
+        server_data.users[item.uri_name].regional_placement = item.regional_placement
+        server_data.users[item.uri_name].elo = item.elo
 
     def select_elo(tuple):
         return float(tuple[1].elo)
