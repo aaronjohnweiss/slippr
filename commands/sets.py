@@ -12,6 +12,8 @@ async def sets(message):
         await response.edit(content='You must add users before performing this operation.')
         return
 
+    previous_users = server_data.users.copy()
+
     pool = None
 
     pool_map = [v.tag for (k, v) in server_data.users.items()]
@@ -22,6 +24,13 @@ async def sets(message):
     for item in pool:
         server_data.users[item.uri_name] = item
 
+    def set_difference(current, previous):
+        difference = current - previous
+        if difference == 0:
+            return ''
+        else:
+            return ' (+{0})'.format(difference)
+
     def select_sets(tuple):
         return int(tuple[1].sets)
 
@@ -29,6 +38,8 @@ async def sets(message):
 
     standings = 'Sets played: \n'
     for idx, tuple in enumerate(results):
-        standings += '> ' + str(idx+1) + '. ' + str(tuple[1].name) + ' - ' + str(tuple[1].wins) + ' / ' + str(tuple[1].losses) + ' (' + str(tuple[1].sets) + ')\n'
+        standings += '> ' + str(idx+1) + '. ' + str(tuple[1].name) + ' - ' + str(tuple[1].wins) + ' / ' + str(tuple[1].losses) + '  |  ' + str(tuple[1].sets) + set_difference(server_data.users[tuple[0]].sets, previous_users[tuple[0]].sets) + '\n'
+
+    server_data.save()
 
     await response.edit(content=standings)
