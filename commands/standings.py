@@ -3,6 +3,8 @@ from multiprocessing import Pool
 from server import Server
 from slippi_profile_parser import get_user_from_tag
 
+import copy
+
 
 async def standings(message):
     server_data = Server(message.guild.name)
@@ -12,7 +14,7 @@ async def standings(message):
         await response.edit(content='You must add users before performing this operation.')
         return
 
-    previous_users = server_data.users.copy()
+    previous_users = copy.deepcopy(server_data.users)
 
     pool = None
 
