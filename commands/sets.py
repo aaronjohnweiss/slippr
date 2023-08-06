@@ -32,8 +32,13 @@ async def sets(message):
         difference = current - previous
         if difference == 0:
             return ''
-        else:
+        if difference > 0:
             return ' (+{0})'.format(difference)
+        else:
+            return ' ({0})'.format(difference)
+
+    def format_stat(stat):
+        return '0' if stat is None else str(stat)
 
     def select_sets(tuple):
         return int(tuple[1].sets)
@@ -42,7 +47,7 @@ async def sets(message):
 
     standings = 'Sets played: \n'
     for idx, tuple in enumerate(results):
-        standings += '> ' + str(idx+1) + '. ' + str(tuple[1].name) + ' - ' + str(tuple[1].wins) + ' / ' + str(tuple[1].losses) + '  |  ' + str(tuple[1].sets) + set_difference(server_data.users[tuple[0]].sets, previous_users[tuple[0]].sets) + '\n'
+        standings += '> ' + str(idx+1) + '. ' + str(tuple[1].name) + ' - ' + format_stat(tuple[1].wins) + ' / ' + format_stat(tuple[1].losses) + '  |  ' + format_stat(tuple[1].sets) + set_difference(server_data.users[tuple[0]].sets, previous_users[tuple[0]].sets) + '\n'
 
     server_data.save()
 
