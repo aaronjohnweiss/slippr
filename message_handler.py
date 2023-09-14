@@ -4,7 +4,7 @@ from commands.delete import delete
 from commands.sets import sets
 from commands.standings import standings
 from commands.users import users
-
+from commands.uptime import uptime
 
 async def handle_message(client, message):
     if message.author == client.user:
@@ -34,5 +34,8 @@ async def handle_message(client, message):
 
     if message.content == '!commands' or message.content == '!help':
         await commands(message)
+
+    if message.content.startswith("!uptime"):
+        await uptime(message)
 
     return
