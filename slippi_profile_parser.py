@@ -17,6 +17,13 @@ post_object = {
   'query': 'fragment userProfilePage on User {\n  fbUid\n  displayName\n  connectCode {\n    code\n    __typename\n  }\n  status\n  activeSubscription {\n    level\n    hasGiftSub\n    __typename\n  }\n  rankedNetplayProfile {\n    id\n    ratingOrdinal\n    ratingUpdateCount\n    wins\n    losses\n    dailyGlobalPlacement\n    dailyRegionalPlacement\n    continent\n    characters {\n      id\n      character\n      gameCount\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nquery AccountManagementPageQuery($cc: String!, $uid: String!) {\n  getUser(fbUid: $uid) {\n    ...userProfilePage\n    __typename\n  }\n  getConnectCode(code: $cc) {\n    user {\n      ...userProfilePage\n      __typename\n    }\n    __typename\n  }\n}\n'
 }
 
+post_headers = {
+    'content-type': 'application/json',
+    'apollographql-client-name': 'slippi-web',
+    'Access-Control-Allow-Origin': '*',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0'
+}
+
 rank_map = {
     0: 'Bronze 1',
     766: 'Bronze 2',
@@ -62,7 +69,7 @@ def get_user_from_tag(tag):
     request_json['variables']['cc'] = user.tag.upper()
     request_json['variables']['uid'] = user.tag.upper()
 
-    x = requests.post(api_url, json=request_json)
+    x = requests.post(api_url, json=request_json, headers=post_headers)
 
     user_data = x.json()['data']['getConnectCode']['user']
     user.name = user_data['displayName']
@@ -72,6 +79,5 @@ def get_user_from_tag(tag):
     user.wins = user_data['rankedNetplayProfile']['wins']
     user.losses = user_data['rankedNetplayProfile']['losses']
     user.sets = user_data['rankedNetplayProfile']['ratingUpdateCount']
-
 
     return user
