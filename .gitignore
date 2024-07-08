@@ -2,8 +2,12 @@
 geckodriver.log
 venv/
 servers/
+metadata/
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/slippr.iml
 /.idea/vcs.xml
 /.idea/inspectionProfiles/profiles_settings.xml
+__pycache__/
+commands/__pycache__/
+
