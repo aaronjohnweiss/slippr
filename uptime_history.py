@@ -58,8 +58,10 @@ class UptimeHistory:
         if len(self.history) == 1:
             return 'No previous outages.'
 
-        delta = str(str(timedelta(seconds=(self.history[-1]['start'] - self.history[-2]['end']))).split('.')[0]).split(':')
+        print(str(self.history[-1]['start']))
+        print(str(self.history[0]['end']))
+        delta = str(str(timedelta(seconds=(self.history[-1]['start'] - self.history[-0]['end']))).split('.')[0]).split(':')
         outage = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.history[-2]['end']))
         duration = str(delta[0] + 'h ' + delta[1] + 'm ' + delta[2] + 's')
-        return 'Previous outage: ' + outage + '\n' + 'Previous outage duration: ' + duration
+        return 'Previous outage: ' + outage + '\n' + 'Previous outage duration fix: ' + duration
 

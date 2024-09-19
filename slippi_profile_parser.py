@@ -70,7 +70,6 @@ def get_user_from_tag(tag):
     request_json['variables']['uid'] = user.tag.upper()
 
     x = requests.post(api_url, json=request_json, headers=post_headers)
-
     user_data = x.json()['data']['getConnectCode']['user']
     user.name = user_data['displayName']
     user.elo = user_data['rankedNetplayProfile']['ratingOrdinal']
