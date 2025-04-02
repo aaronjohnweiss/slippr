@@ -14,9 +14,8 @@ post_object = {
     'cc': 'SYS#0',
     'uid': 'SYS#0'
   },
-  'query': 'fragment userProfilePage on User {\n  fbUid\n  displayName\n  connectCode {\n    code\n    __typename\n  }\n  status\n  activeSubscription {\n    level\n    hasGiftSub\n    __typename\n  }\n  rankedNetplayProfile {\n    id\n    ratingOrdinal\n    ratingUpdateCount\n    wins\n    losses\n    dailyGlobalPlacement\n    dailyRegionalPlacement\n    continent\n    characters {\n      id\n      character\n      gameCount\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nquery AccountManagementPageQuery($cc: String!, $uid: String!) {\n  getUser(fbUid: $uid) {\n    ...userProfilePage\n    __typename\n  }\n  getConnectCode(code: $cc) {\n    user {\n      ...userProfilePage\n      __typename\n    }\n    __typename\n  }\n}\n'
+  'query': 'fragment profileFieldsV2 on NetplayProfileV2 {\n  id\n  ratingOrdinal\n  ratingUpdateCount\n  wins\n  losses\n  dailyGlobalPlacement\n  dailyRegionalPlacement\n  continent\n  characters {\n    character\n    gameCount\n    __typename\n  }\n  __typename\n}\n\nfragment userProfilePage on User {\n  fbUid\n  displayName\n  connectCode {\n    code\n    __typename\n  }\n  status\n  activeSubscription {\n    level\n    hasGiftSub\n    __typename\n  }\n  rankedNetplayProfile {\n    ...profileFieldsV2\n    __typename\n  }\n  rankedNetplayProfileHistory {\n    ...profileFieldsV2\n    season {\n      id\n      startedAt\n      endedAt\n      name\n      status\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nquery AccountManagementPageQuery($cc: String!, $uid: String!) {\n  getUser(fbUid: $uid) {\n    ...userProfilePage\n    __typename\n  }\n  getConnectCode(code: $cc) {\n    user {\n      ...userProfilePage\n      __typename\n    }\n    __typename\n  }\n}\n'
 }
-
 post_headers = {
     'content-type': 'application/json',
     'apollographql-client-name': 'slippi-web',
@@ -64,12 +63,13 @@ def get_rank(elo, regional_placement):
 
 def get_user_from_tag(tag):
     user = User(tag)
-
+    print('requesting user ' + tag)
     request_json = post_object.copy()
     request_json['variables']['cc'] = user.tag.upper()
     request_json['variables']['uid'] = user.tag.upper()
 
     x = requests.post(api_url, json=request_json, headers=post_headers)
+    print(x.json())
     user_data = x.json()['data']['getConnectCode']['user']
     user.name = user_data['displayName']
     user.elo = user_data['rankedNetplayProfile']['ratingOrdinal']
