@@ -6,7 +6,7 @@ options = Options()
 options.add_argument("-headless")
 
 base_url = 'https://slippi.gg/user/'
-api_url = 'https://gql-gateway-dot-slippi.uc.r.appspot.com/graphql'
+api_url = 'https://gql-gateway-2-dot-slippi.uc.r.appspot.com/graphql'
 
 post_object = {
   'operationName': 'AccountManagementPageQuery',
