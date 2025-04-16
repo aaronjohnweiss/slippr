@@ -5,6 +5,7 @@ from commands.sets import sets
 from commands.standings import standings
 from commands.users import users
 from commands.uptime import uptime
+from commands.countdown import countdown_message
 
 async def handle_message(client, message):
     if message.author == client.user:
@@ -31,6 +32,9 @@ async def handle_message(client, message):
 
     if message.content == '!users':
         await users(message)
+
+    if message.content.startswith('!countdown'):
+        await countdown_message(message)
 
     if message.content == '!commands' or message.content == '!help':
         await commands(message)

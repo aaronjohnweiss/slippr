@@ -1,20 +1,27 @@
 import os
 import pickle
+from countdown import Countdown
+
 
 def load(path):
     with open(path, 'rb') as f:
         return pickle.load(f)
 
+
 def dump(x, path):
     with open(path, 'wb') as f:
         pickle.dump(x, f, protocol=pickle.HIGHEST_PROTOCOL)
 
+
 def get_path(name):
     return './servers/' + str(name) + '.pkl'
+
+
 class Server:
 
     def __init__(self, name):
         self.users = dict()
+        self.countdown = Countdown(0, 'none')
         if os.path.isfile('servers/' + str(name) + '.pkl'):
             self.__dict__ = load(get_path(name))
         else:
