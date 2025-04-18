@@ -34,6 +34,8 @@ if __name__ == '__main__':
         for guild in client.guilds:
 
             server_data = Server(guild.name)
+            if not hasattr(server_data, 'countdown'):
+                continue
             if server_data.countdown.active:
                 did_decrement = server_data.countdown.decrement()
                 if not did_decrement:
@@ -42,18 +44,11 @@ if __name__ == '__main__':
                 server_data.save()
 
                 meleechat = next(obj for obj in guild.channels if obj.name == 'meleechat')
-                msg = ''
 
-                if server_data.countdown.active:
-                    if server_data.countdown.days == 1:
-                        msg = 'There is ' + str(server_data.countdown.days) + ' day remaining until ' + str(server_data.countdown.reason) + '.'
-                    else:
-                        msg = 'There are ' + str(server_data.countdown.days) + ' days remaining until ' + str(server_data.countdown.reason) + '.'
-                else:
-                    msg = 'Countdown for ' + str(server_data.countdown.reason) + ' finished!'
-                if msg != '':
-                    channel = client.get_channel(meleechat.id)
-                    await channel.send(msg)
+                msg = server_data.countdown.status()
+
+                channel = client.get_channel(meleechat.id)
+                await channel.send(msg)
 
 
     client.run(TOKEN)

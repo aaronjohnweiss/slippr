@@ -29,3 +29,15 @@ class Countdown:
 
         return False
 
+    def status(self):
+        msg = ''
+        if self.active:
+            if self.days == 1:
+                msg = 'There is ' + str(self.days) + ' day remaining until ' + str(
+                    self.reason) + '.'
+            else:
+                msg = 'There are ' + str(self.days) + ' days remaining until ' + str(
+                    self.reason) + '.'
+        else:
+            msg = 'Countdown for ' + str(self.reason) + ' finished!'
+        return msg
