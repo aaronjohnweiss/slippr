@@ -20,7 +20,7 @@ class Countdown:
 
     def decrement(self):
         if self.active:
-            if datetime.today() != self.timestamp:
+            if abs(datetime.today() - self.timestamp).days > 0:
                 self.timestamp = datetime.today()
                 self.days -= 1
                 if self.is_finished():
